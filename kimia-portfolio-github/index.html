@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kimia Mostadam – UX Researcher & Designer specialising in inclusive digital experiences.">
+  <title>Kimia Mostadam – UX Researcher</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,300&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+  /* ═══════════════════════════════════════════════════
+     TOKENS
+  ═══════════════════════════════════════════════════ */
+  :root {
+    --bg:         #F5F3FF;
+    --bg2:        #EDE9FE;
+    --surface:    #FFFFFF;
+    --purple:     #7C3AED;
+    --purple-mid: #A78BFA;
+    --purple-lt:  #EDE9FE;
+    --purple-dk:  #4C1D95;
+    --text:       #1E1B2E;
+    --muted:      #6E6A82;
+    --border:     #DDD6FE;
+    --white:      #FFFFFF;
+
+    --f-head: 'Fraunces', Georgia, serif;
+    --f-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+    --r-sm:   8px;
+    --r-md:   16px;
+    --r-lg:   24px;
+    --r-xl:   32px;
+    --r-pill: 999px;
+
+    --nav-h:  76px;
+    --max-w:  1240px;
+    --gutter: clamp(1.25rem, 5vw, 3rem);
+
+    --shadow-sm: 0 2px 12px rgba(124,58,237,.08);
+    --shadow-md: 0 8px 32px rgba(124,58,237,.12);
+    --shadow-lg: 0 20px 60px rgba(124,58,237,.15);
+  }
+
+  /* ═══════════════════════════════════════════════════
+     RESET
+  ═══════════════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--f-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img  { display: block; max-width: 100%; height: auto; }
+  a    { color: inherit; text-decoration: none; }
+  ul   { list-style: none; }
+
+  /* ═══════════════════════════════════════════════════
+     UTILITIES
+  ═══════════════════════════════════════════════════ */
+  .container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .3rem .85rem;
+    border-radius: var(--r-pill);
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    background: var(--purple-lt);
+    color: var(--purple);
+  }
+  .tag-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--purple);
+  }
+
+  /* ═══════════════════════════════════════════════════
+     NAVIGATION
+  ═══════════════════════════════════════════════════ */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    transition: background .3s, box-shadow .3s;
+  }
+  .nav.scrolled {
+    background: rgba(245,243,255,.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 1px 0 var(--border);
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .nav-logo img {
+    height: 34px;
+    width: auto;
+  }
+
+  /* Center links */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .nav-links a {
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: color .2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 0;
+    height: 1.5px;
+    background: var(--purple);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .25s ease;
+    border-radius: 2px;
+  }
+  .nav-links a:hover { color: var(--purple); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* Dropdown */
+  .nav-drop { position: relative; }
+  .nav-drop > a {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    cursor: default;
+  }
+  .nav-drop > a svg {
+    width: 12px; height: 12px;
+    transition: transform .2s;
+  }
+  .nav-drop:hover > a svg { transform: rotate(180deg); }
+
+  .drop-panel {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: .5rem;
+    min-width: 190px;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s, transform .2s;
+  }
+  .nav-drop:hover .drop-panel {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .drop-panel a {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .6rem 1rem;
+    border-radius: var(--r-md);
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: background .15s, color .15s;
+  }
+  .drop-panel a:hover { background: var(--purple-lt); color: var(--purple); }
+  .drop-panel a::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--purple-mid);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity .15s;
+  }
+  .drop-panel a:hover::before { opacity: 1; }
+
+  /* Right actions */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+  .nav-icon-btn {
+    width: 38px; height: 38px;
+    border-radius: var(--r-pill);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    transition: border-color .2s, background .2s, color .2s;
+  }
+  .nav-icon-btn:hover {
+    border-color: var(--purple);
+    background: var(--purple-lt);
+    color: var(--purple);
+  }
+  .nav-icon-btn svg { width: 16px; height: 16px; }
+
+  .btn-resume {
+    padding: .5rem 1.2rem;
+    border-radius: var(--r-pill);
+    background: var(--purple);
+    color: white;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    transition: opacity .2s, transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 14px rgba(124,58,237,.3);
+  }
+  .btn-resume:hover {
+    opacity: .9;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(124,58,237,.4);
+  }
+
+  /* Burger */
+  .burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+  }
+  .burger span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: .3s;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     MOBILE MENU
+  ═══════════════════════════════════════════════════ */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--surface);
+    z-index: 199;
+    padding: calc(var(--nav-h) + 2rem) var(--gutter) 2rem;
+    flex-direction: column;
+    gap: 0;
+    overflow-y: auto;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    padding: 1rem 0;
+    font-size: 1.15rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    transition: color .2s;
+  }
+  .mobile-nav a:hover { color: var(--purple); }
+  .mobile-nav .mobile-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     HERO
+  ═══════════════════════════════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    padding-top: var(--nav-h);
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Gradient blob background */
+  .hero-blobs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: .35;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .blob-1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, #C4B5FD, #7C3AED);
+    top: -100px; right: -80px;
+    animation-delay: 0s;
+  }
+  .blob-2 {
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, #DDD6FE, #A78BFA);
+    bottom: 40px; right: 200px;
+    animation-delay: -4s;
+  }
+  .blob-3 {
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, #EDE9FE, #C4B5FD);
+    top: 200px; left: -60px;
+    animation-delay: -8s;
+  }
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(20px, -30px) scale(1.05); }
+  }
+
+  /* Grid pattern overlay */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: .3;
+    z-index: 0;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    min-height: calc(100vh - var(--nav-h));
+    padding: 4rem var(--gutter);
+    max-width: var(--max-w);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-text {}
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .4rem 1rem;
+    border-radius: var(--r-pill);
+    border: 1.5px solid var(--border);
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--purple);
+    background: rgba(255,255,255,.7);
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge span {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--purple);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: .5; transform: scale(.8); }
+  }
+
+  .hero-text h1 {
+    font-family: var(--f-head);
+    font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -.02em;
+    margin-bottom: 1.25rem;
+    color: var(--text);
+  }
+  .hero-text h1 em {
+    font-style: italic;
+    color: var(--purple);
+  }
+
+  .hero-text p {
+    font-size: clamp(.95rem, 1.5vw, 1.1rem);
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+  }
+  .btn-hero-primary {
+    padding: .85rem 2rem;
+    background: var(--purple);
+    color: white;
+    border-radius: var(--r-pill);
+    font-size: .88rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    box-shadow: 0 6px 20px rgba(124,58,237,.35);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-hero-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(124,58,237,.45);
+  }
+  .btn-hero-secondary {
+    padding: .85rem 2rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-pill);
+    font-size: .88rem;
+    font-weight: 500;
+    color: var(--text);
+    background: rgba(255,255,255,.6);
+    backdrop-filter: blur(6px);
+    transition: border-color .2s, background .2s, transform .2s;
+  }
+  .btn-hero-secondary:hover {
+    border-color: var(--purple);
+    background: var(--purple-lt);
+    color: var(--purple);
+    transform: translateY(-2px);
+  }
+
+  /* Hero image area */
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-img-frame {
+    position: relative;
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 4/3;
+    background: var(--purple-lt);
+  }
+  .hero-img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-float-card {
+    position: absolute;
+    background: white;
+    border-radius: var(--r-lg);
+    padding: .85rem 1.15rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    border: 1px solid var(--border);
+  }
+  .hero-float-card .icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: var(--purple-lt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .card-top    { top: -18px; left: -28px; }
+  .card-bottom { bottom: -18px; right: -28px; }
+
+  /* Hero scroll hint */
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: 1;
+    animation: bounce 2.5s ease-in-out infinite;
+  }
+  .hero-scroll svg { width: 16px; height: 16px; }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     ABOUT STRIP
+  ═══════════════════════════════════════════════════ */
+  .about-strip {
+    background: var(--purple);
+    color: white;
+    padding: 3.5rem var(--gutter);
+  }
+  .about-strip-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: center;
+  }
+  .about-strip p {
+    font-family: var(--f-head);
+    font-size: clamp(1.1rem, 2vw, 1.55rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+    opacity: .95;
+  }
+  .about-strip p strong {
+    font-weight: 500;
+    font-style: normal;
+    display: block;
+    margin-bottom: .25rem;
+    font-size: .85rem;
+    font-family: var(--f-body);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    opacity: .65;
+  }
+  .about-strip-stats {
+    display: flex;
+    gap: 3rem;
+    flex-shrink: 0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--f-head);
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: .25rem;
+  }
+  .stat-label {
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    opacity: .65;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     PROJECTS
+  ═══════════════════════════════════════════════════ */
+  .projects-section {
+    padding: 8rem var(--gutter) 6rem;
+  }
+  .projects-section .container { max-width: var(--max-w); }
+
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .section-eyebrow span {
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--purple);
+  }
+  .eyebrow-line {
+    flex: 1;
+    max-width: 60px;
+    height: 1.5px;
+    background: var(--purple-mid);
+    border-radius: 2px;
+  }
+
+  .section-heading {
+    font-family: var(--f-head);
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Project card ── */
+  .project-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: stretch;
+    background: var(--surface);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 3rem;
+    transition: box-shadow .35s, transform .35s;
+  }
+  .project-item:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+  .project-item:nth-child(even) .project-img-wrap { order: 2; }
+  .project-item:nth-child(even) .project-body     { order: 1; }
+
+  .project-img-wrap {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg2);
+    min-height: 400px;
+  }
+  .project-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .5s ease;
+  }
+  .project-item:hover .project-img-wrap img { transform: scale(1.04); }
+
+  /* Number badge on image */
+  .project-num {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    font-family: var(--f-head);
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: white;
+    opacity: .18;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Color accent strip along top of image */
+  .project-img-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--purple), var(--purple-mid));
+  }
+
+  .project-body {
+    padding: clamp(2rem, 4vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .75rem;
+  }
+
+  .project-body .tag { align-self: flex-start; }
+
+  .project-title {
+    font-family: var(--f-head);
+    font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    color: var(--text);
+  }
+
+  .project-desc {
+    font-size: .98rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 380px;
+  }
+
+  .project-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--purple-lt);
+    border-radius: 2px;
+    margin: .5rem 0;
+  }
+
+  .btn-case-study {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    align-self: flex-start;
+    margin-top: .75rem;
+    padding: .75rem 1.5rem;
+    border-radius: var(--r-pill);
+    border: 1.5px solid var(--border);
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: background .2s, border-color .2s, color .2s, transform .2s, gap .2s;
+  }
+  .btn-case-study:hover {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: white;
+    gap: .85rem;
+    transform: translateX(2px);
+  }
+  .btn-case-study svg {
+    width: 14px; height: 14px;
+    transition: transform .2s;
+  }
+  .btn-case-study:hover svg { transform: translateX(3px); }
+
+  /* ═══════════════════════════════════════════════════
+     CONTACT
+  ═══════════════════════════════════════════════════ */
+  .contact-section {
+    padding: 6rem var(--gutter);
+  }
+  .contact-box {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    background: linear-gradient(135deg, #4C1D95 0%, #6D28D9 50%, #7C3AED 100%);
+    border-radius: var(--r-xl);
+    padding: clamp(3rem, 6vw, 5rem) clamp(2rem, 6vw, 5rem);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 80% 20%, rgba(196,181,253,.2) 0%, transparent 50%),
+      radial-gradient(circle at 10% 80%, rgba(167,139,250,.15) 0%, transparent 40%);
+  }
+  .contact-text { position: relative; z-index: 1; }
+  .contact-eyebrow {
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: .75rem;
+  }
+  .contact-text h2 {
+    font-family: var(--f-head);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 500;
+    line-height: 1.2;
+    color: white;
+    margin-bottom: .75rem;
+  }
+  .contact-text p {
+    font-size: 1rem;
+    color: rgba(255,255,255,.65);
+    line-height: 1.7;
+    max-width: 420px;
+  }
+  .contact-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+  .btn-contact-main {
+    padding: .9rem 2rem;
+    border-radius: var(--r-pill);
+    background: white;
+    color: var(--purple-dk);
+    font-size: .88rem;
+    font-weight: 600;
+    text-align: center;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 18px rgba(0,0,0,.15);
+  }
+  .btn-contact-main:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(0,0,0,.2); }
+  .btn-contact-ghost {
+    padding: .9rem 2rem;
+    border-radius: var(--r-pill);
+    border: 1.5px solid rgba(255,255,255,.3);
+    color: white;
+    font-size: .88rem;
+    font-weight: 500;
+    text-align: center;
+    transition: border-color .2s, background .2s;
+  }
+  .btn-contact-ghost:hover { border-color: white; background: rgba(255,255,255,.1); }
+
+  /* ═══════════════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════════════ */
+  footer {
+    background: var(--text);
+    padding: 2.5rem var(--gutter);
+  }
+  .footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .footer-logo img { height: 28px; filter: brightness(0) invert(1); opacity: .5; }
+  .footer-copy {
+    font-size: .8rem;
+    color: rgba(255,255,255,.35);
+    letter-spacing: .03em;
+  }
+  .footer-links {
+    display: flex;
+    gap: 1.25rem;
+  }
+  .footer-links a {
+    font-size: .8rem;
+    color: rgba(255,255,255,.4);
+    transition: color .2s;
+  }
+  .footer-links a:hover { color: var(--purple-mid); }
+
+  /* ═══════════════════════════════════════════════════
+     SCROLL ANIMATIONS
+  ═══════════════════════════════════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .65s ease, transform .65s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .3s; }
+
+  /* ═══════════════════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════════════════ */
+  @media (max-width: 960px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      min-height: auto;
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+    .hero-text p { margin-left: auto; margin-right: auto; }
+    .hero-ctas { justify-content: center; }
+    .hero-visual { max-width: 420px; margin: 0 auto; }
+    .hero-badge { justify-content: center; }
+
+    .about-strip-inner { grid-template-columns: 1fr; }
+    .about-strip-stats { justify-content: flex-start; }
+
+    .project-item {
+      grid-template-columns: 1fr;
+    }
+    .project-item:nth-child(even) .project-img-wrap { order: 0; }
+    .project-item:nth-child(even) .project-body     { order: 0; }
+    .project-img-wrap { min-height: 280px; }
+
+    .contact-box { grid-template-columns: 1fr; }
+    .contact-actions { flex-direction: row; flex-wrap: wrap; }
+  }
+
+  @media (max-width: 680px) {
+    .nav-links, .nav-actions { display: none; }
+    .burger { display: flex; }
+    .hero-text h1 { font-size: 2.4rem; }
+    .card-top, .card-bottom { display: none; }
+    .about-strip-stats { gap: 1.5rem; flex-wrap: wrap; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+
+    <a href="#top" class="nav-logo">
+      <img src="images/logo.png" alt="Kimia Mostadam">
+    </a>
+
+    <ul class="nav-links">
+      <li class="nav-drop">
+        <a>
+          Projects
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </a>
+        <div class="drop-panel">
+          <a href="#keysight">Keysight PWMA</a>
+          <a href="#dark-patterns">Dark Patterns</a>
+          <a href="#travel-link">Travel Link</a>
+          <a href="#uxlerator">Uxlerator</a>
+        </div>
+      </li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a class="nav-icon-btn" href="https://www.linkedin.com/in/kimiamostadam" target="_blank" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+      <a class="nav-icon-btn" href="mailto:kimiamostadam@gmail.com" aria-label="Send email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+      </a>
+      <a class="btn-resume" href="https://www.kimiamostadam.com/s/Top-Resume-6_16.pdf" target="_blank">Resume</a>
+    </div>
+
+    <button class="burger" id="burger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
+</nav>
+
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="#keysight"     onclick="closeMobile()">Keysight PWMA</a>
+  <a href="#dark-patterns" onclick="closeMobile()">Dark Patterns</a>
+  <a href="#travel-link"  onclick="closeMobile()">Travel Link</a>
+  <a href="#uxlerator"    onclick="closeMobile()">Uxlerator</a>
+  <a href="about.html">About</a>
+  <a href="#contact"      onclick="closeMobile()">Contact</a>
+  <div class="mobile-actions">
+    <a class="btn-resume" href="https://www.kimiamostadam.com/s/Top-Resume-6_16.pdf" target="_blank">Resume ↗</a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="hero-inner">
+    <!-- Text -->
+    <div class="hero-text">
+      <div class="hero-badge">
+        <span></span>
+        Available for opportunities
+      </div>
+      <h1>Hello, I am<br><em>Kimia Mostadam</em></h1>
+      <p>A UX Researcher using my background in Cognitive Science and Psychology to create <strong>meaningful and inclusive</strong> digital experiences.</p>
+      <div class="hero-ctas">
+        <a class="btn-hero-primary" href="#projects">View my work</a>
+        <a class="btn-hero-secondary" href="about.html">About me</a>
+      </div>
+    </div>
+
+    <!-- Visual -->
+    <div class="hero-visual">
+      <div class="hero-float-card card-top reveal">
+        <div class="icon">🧠</div>
+        <div>
+          <div style="font-size:.68rem;color:var(--muted);font-weight:400;">Background in</div>
+          Cognitive Science
+        </div>
+      </div>
+
+      <div class="hero-img-frame">
+        <img src="images/about-photo.jpg" alt="Kimia Mostadam – UX Researcher">
+      </div>
+
+      <div class="hero-float-card card-bottom reveal reveal-delay-1">
+        <div class="icon">✦</div>
+        <div>
+          <div style="font-size:.68rem;color:var(--muted);font-weight:400;">Focus area</div>
+          Inclusive Design
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="hero-scroll" href="#projects" aria-label="Scroll down">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+    </svg>
+  </a>
+</section>
+
+<!-- ════════════════════════════════════════════
+     ABOUT STRIP
+════════════════════════════════════════════ -->
+<div class="about-strip">
+  <div class="about-strip-inner container">
+    <p>
+      <strong>Who I am</strong>
+      "I believe great research is the foundation of every experience that truly resonates — I bridge human psychology with design thinking to build products people actually want to use."
+    </p>
+    <div class="about-strip-stats">
+      <div class="stat">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Disciplines</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Curiosity</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PROJECTS
+════════════════════════════════════════════ -->
+<section class="projects-section" id="projects">
+  <div class="container">
+
+    <div class="section-eyebrow reveal">
+      <span>Selected work</span>
+      <div class="eyebrow-line"></div>
+    </div>
+    <h2 class="section-heading reveal reveal-delay-1">Case Studies</h2>
+
+    <div class="projects-list" style="margin-top:3.5rem;">
+
+      <!-- ── Project 1 · Keysight PWMA ── -->
+      <article class="project-item reveal" id="keysight">
+        <div class="project-img-wrap">
+          <div class="project-num">01</div>
+          <img src="images/keysight-main.png" alt="Keysight PWMA – analytics dashboard redesign">
+        </div>
+        <div class="project-body">
+          <div class="tag"><span class="tag-dot"></span>UX Research</div>
+          <h3 class="project-title">Keysight PWMA</h3>
+          <div class="project-divider"></div>
+          <p class="project-desc">Design improvements for Keysight's analytics software, Pathwave Measurement Analytics — improving usability for engineers working with complex data.</p>
+          <a class="btn-case-study" href="keysight-pwma.html" target="_blank">
+            View Case Study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- ── Project 2 · Dark Patterns ── -->
+      <article class="project-item reveal" id="dark-patterns">
+        <div class="project-img-wrap">
+          <div class="project-num">02</div>
+          <img src="images/dark-patterns-detail.png" alt="Dark Patterns – research and documentation project">
+        </div>
+        <div class="project-body">
+          <div class="tag"><span class="tag-dot"></span>UX Research</div>
+          <h3 class="project-title">Dark Patterns</h3>
+          <div class="project-divider"></div>
+          <p class="project-desc">A research website cataloguing common dark visual design layouts and manipulative patterns — raising awareness and advocating for ethical design.</p>
+          <a class="btn-case-study" href="dark-patterns.html" target="_blank">
+            View Case Study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- ── Project 3 · Travel Link ── -->
+      <article class="project-item reveal" id="travel-link">
+        <div class="project-img-wrap">
+          <div class="project-num">03</div>
+          <img src="images/travel-link-detail.png" alt="Travel Link – trip planning platform">
+        </div>
+        <div class="project-body">
+          <div class="tag"><span class="tag-dot"></span>UX Research &amp; Design</div>
+          <h3 class="project-title">Travel Link</h3>
+          <div class="project-divider"></div>
+          <p class="project-desc">An all-in-one platform where travellers can find and organise everything they need to plan a trip — from inspiration to booking.</p>
+          <a class="btn-case-study" href="travel-link.html" target="_blank">
+            View Case Study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- ── Project 4 · Uxlerator ── -->
+      <article class="project-item reveal" id="uxlerator">
+        <div class="project-img-wrap">
+          <div class="project-num">04</div>
+          <img src="images/uxlerator-detail.png" alt="Uxlerator – mentorship app for UX professionals">
+        </div>
+        <div class="project-body">
+          <div class="tag"><span class="tag-dot"></span>UX Research</div>
+          <h3 class="project-title">Uxlerator</h3>
+          <div class="project-divider"></div>
+          <p class="project-desc">A mobile app connecting UX job seekers with experienced mentors — providing career guidance, community, and networking in one place.</p>
+          <a class="btn-case-study" href="uxlerator.html" target="_blank">
+            View Case Study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     CONTACT
+════════════════════════════════════════════ -->
+<section class="contact-section" id="contact">
+  <div class="contact-box container reveal">
+    <div class="contact-text">
+      <p class="contact-eyebrow">Let's connect</p>
+      <h2>Want to get in touch?<br>Drop me a line!</h2>
+      <p>I'm always open to new opportunities, collaborations, and conversations about UX research and design.</p>
+    </div>
+    <div class="contact-actions">
+      <a class="btn-contact-main" href="mailto:kimiamostadam@gmail.com">Send an email</a>
+      <a class="btn-contact-ghost" href="https://www.linkedin.com/in/kimiamostadam" target="_blank">Connect on LinkedIn ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <a href="#top" class="footer-logo">
+      <img src="images/logo.png" alt="Kimia Mostadam">
+    </a>
+    <p class="footer-copy">© 2026 Made with 💜 by Kimia Mostadam</p>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/kimiamostadam" target="_blank">LinkedIn</a>
+      <a href="mailto:kimiamostadam@gmail.com">Email</a>
+      <a href="https://www.kimiamostadam.com/s/Top-Resume-6_16.pdf" target="_blank">Resume</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════ -->
+<script>
+  /* Nav scroll effect */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* Mobile menu */
+  const burger   = document.getElementById('burger');
+  const mobileNav = document.getElementById('mobile-nav');
+  burger.addEventListener('click', () => {
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMobile() {
+    mobileNav.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* Scroll-reveal */
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
