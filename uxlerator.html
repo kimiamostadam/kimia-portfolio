@@ -254,6 +254,7 @@
   burger.addEventListener('click',()=>{mobileNav.classList.toggle('open');document.body.style.overflow=mobileNav.classList.contains('open')?'hidden':'';});
   const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');obs.unobserve(x.target);}}),{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.proj-img img').forEach(img=>{const apply=()=>{if(img.naturalHeight>img.naturalWidth){img.style.maxHeight='none';img.style.maxWidth='80%';img.closest('.proj-img').style.textAlign='center';}};img.complete?apply():img.addEventListener('load',apply);});
 </script>
 </body>
 </html>
