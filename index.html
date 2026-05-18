@@ -302,10 +302,8 @@
      HERO
   ═══════════════════════════════════════════════════ */
   .hero {
-    min-height: 75vh;
-    padding-top: var(--nav-h);
-    display: flex;
-    align-items: center;
+    padding-top: calc(var(--nav-h) + 2rem);
+    padding-bottom: 4rem;
     position: relative;
     overflow: hidden;
   }
@@ -367,7 +365,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: center;
-    padding: 2rem var(--gutter) 3.5rem;
+    padding: 0 var(--gutter);
     max-width: var(--max-w);
     margin: 0 auto;
     width: 100%;
@@ -512,21 +510,7 @@
 
   /* Hero scroll hint */
   .hero-scroll {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .4rem;
-    font-size: .72rem;
-    font-weight: 500;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    z-index: 1;
-    animation: bounce 2.5s ease-in-out infinite;
+    display: none;
   }
   .hero-scroll svg { width: 16px; height: 16px; }
   @keyframes bounce {
@@ -896,8 +880,8 @@
       grid-template-columns: 1fr;
       text-align: center;
       min-height: auto;
-      padding-top: 5rem;
-      padding-bottom: 5rem;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
     }
     .hero-text p { margin-left: auto; margin-right: auto; }
     .hero-ctas { justify-content: center; }
