@@ -62,7 +62,7 @@
   .proj-section p{font-size:1rem;color:var(--muted);line-height:1.8;margin-bottom:1rem;max-width:680px;}
   .proj-section p strong{color:var(--text);font-weight:600;}
   .proj-img{border-radius:var(--r-xl);overflow:hidden;margin:2rem 0;box-shadow:var(--shadow-md);border:1px solid var(--border);}
-  .proj-img img{display:block;max-width:100%;max-height:33.33vh;width:auto;height:auto;margin:0 auto;}
+  .proj-img img{display:block;max-width:100%;width:auto;height:auto;margin:0 auto;}
   .proj-img-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0;}
   .proj-img-3col{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin:2rem 0;}
   .proj-img-2col .proj-img,.proj-img-3col .proj-img{margin:0;}
@@ -225,8 +225,13 @@
   burger.addEventListener('click',()=>{mobileNav.classList.toggle('open');document.body.style.overflow=mobileNav.classList.contains('open')?'hidden':'';});
   const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');obs.unobserve(x.target);}}),{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-  function applyPortraitFix(img){if(img.naturalWidth>0&&img.naturalHeight>img.naturalWidth){img.style.maxHeight='none';img.style.maxWidth='80%';img.closest('.proj-img').style.textAlign='center';}}
-  document.querySelectorAll('.proj-img img').forEach(img=>img.decode().then(()=>applyPortraitFix(img)).catch(()=>{}));
+  document.querySelectorAll('.proj-img img').forEach(img=>{
+    img.decode().then(()=>{
+      if(img.src.includes('research.png')){
+        img.style.maxHeight='33.33vh';
+      }
+    }).catch(()=>{});
+  });
 </script>
 </body>
 </html>
