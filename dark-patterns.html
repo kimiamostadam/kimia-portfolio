@@ -225,9 +225,10 @@
   burger.addEventListener('click',()=>{mobileNav.classList.toggle('open');document.body.style.overflow=mobileNav.classList.contains('open')?'hidden':'';});
   const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');obs.unobserve(x.target);}}),{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  const targets = ['research.png', 'intro.png', 'findings.png'];
   document.querySelectorAll('.proj-img img').forEach(img=>{
     img.decode().then(()=>{
-      if(img.src.includes('research.png')){
+      if(targets.some(name => img.src.includes(name))){
         img.style.maxHeight='25vh';
       }
     }).catch(()=>{});
